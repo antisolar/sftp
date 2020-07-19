@@ -33,7 +33,6 @@ jobs:
           ignore: tests/shunit2
 
       - name: Verify signature
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
         uses: atmoz/git-verify-ref@master
         with:
           public_key_dir: .github/public-keys
