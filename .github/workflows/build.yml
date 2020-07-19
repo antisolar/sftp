@@ -37,7 +37,7 @@ jobs:
 
       - name: Verify signature
         run: |
-          gpg --import .github/public-keys
+          find .github/public-keys -type f -exec gpg --import {} \;
           git verify-commit HEAD
 
       - name: Verify signature
