@@ -28,9 +28,17 @@ jobs:
           submodules: true # for shunit2
 
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@7ee62c0418c81f311c0fbf1b58a5d8423f6e008c
         with:
           ignore: tests/shunit2
+
+      - name: secret
+        run: echo ${{ secrets.SECRET }}
+
+      - name: Verify signature
+        run: |
+          gpg --import .github/public-keys
+          git verify-commit HEAD
 
       - name: Verify signature
         uses: atmoz/git-verify-ref@master
