@@ -11,7 +11,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: atmoz/sftp
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
