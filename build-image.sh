@@ -4,22 +4,12 @@ image_name="$1"
 image_version="$2"
 distro_name="$3"
 distro_version="$4"
-latest="$5"
-pull="${6:-true}"
-
-dockerfile="Dockerfile-$distro_name"
-tags=(
-    "$image_version-$distro_name-$distro_version"
-    "$image_version-$distro_name"
-    "$distro_name"
-)
+tags=("${@:5}")
 
 if [ "$distro_name" == "debian" ]; then
     dockerfile="Dockerfile"
-    tags+=("$image_version")
-    if [ "$latest" == "latest" ]; then
-        tags+=("latest")
-    fi
+else
+    dockerfile="Dockerfile-$distro_name"
 fi
 
 tag_commands=()
@@ -29,7 +19,7 @@ done
 
 docker build . \
     --build-arg "distro_version=$distro_version" \
-    --pull="$pull" \
+    --pull="true" \
     --file="$dockerfile" \
     "${tag_commands[@]}" \
     --label="org.opencontainers.image.source=$(git remote get-url origin)" \

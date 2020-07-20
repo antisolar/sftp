@@ -28,26 +28,30 @@ jobs:
         with:
           ignore: tests/shunit2
 
-      - name: Build v1 debian:buster image
-        run: ./build-image.sh $IMAGE_NAME 1 debian buster latest
+      - name: Build 1-debian-buster
+        run: |
+          ./build-image.sh $IMAGE_NAME 1 debian buster \
+            1-debian-buster 1-debian debian 1 latest
 
-      - name: Test v1 debian:buster image
+      - name: Test 1-debian-buster
         run: tests/run $IMAGE_NAME:1-debian-buster
 
-      - name: Build v1 alpine:3 image
-        run: ./build-image.sh $IMAGE_NAME 1 alpine 3
+      - name: Build 1-alpine-3
+        run: |
+          ./build-image.sh $IMAGE_NAME 1 alpine 3 \
+            1-alpine-3 1-alpine alpine
 
-      - name: Test v1 alpine:3 image
+      - name: Test 1-alpine-3
         run: tests/run $IMAGE_NAME:1-alpine-3
 
       - name: Verify signature
-        if: github.ref == 'refs/heads/master'
+        if: startsWith(github.ref, 'refs/heads/release/')
         uses: atmoz/git-verify-ref@master
         with:
           import-github-users: atmoz
 
       - name: Push images to Docker Hub registry
-        if: github.ref == 'refs/heads/master'
+        if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login \
             -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
@@ -56,7 +60,7 @@ jobs:
           docker logout
 
       - name: Push images to GitHub registry
-        if: github.ref == 'refs/heads/master'
+        if: startsWith(github.ref, 'refs/heads/release/')
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com \
             -u ${{ github.actor }} --password-stdin
