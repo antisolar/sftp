@@ -1,4 +1,5 @@
-FROM alpine:latest
+ARG distro_version
+FROM alpine:$distro_version
 MAINTAINER Adrian Dvergsdal [atmoz.net]
 
 # Steps done in one RUN layer:

@@ -1,4 +1,5 @@
-FROM debian:buster
+ARG distro_version
+FROM debian:$distro_version
 MAINTAINER Adrian Dvergsdal [atmoz.net]
 
 # Steps done in one RUN layer:
