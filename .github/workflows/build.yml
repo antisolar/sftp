@@ -24,22 +24,28 @@ jobs:
           submodules: true # for shunit2
 
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@0.4.1
         with:
           ignore: tests/shunit2
 
       - name: Build 1-debian-buster
         run: |
-          ./build-image.sh $IMAGE_NAME 1 debian buster \
-            1-debian-buster 1-debian debian 1 latest
+          ./build-image.sh Dockerfile-debian-buster \
+            $IMAGE_NAME:1-debian-buster \
+            $IMAGE_NAME:1-debian \
+            $IMAGE_NAME:1 \
+            $IMAGE_NAME:debian \
+            $IMAGE_NAME:latest
 
       - name: Test 1-debian-buster
         run: tests/run $IMAGE_NAME:1-debian-buster
 
       - name: Build 1-alpine-3
         run: |
-          ./build-image.sh $IMAGE_NAME 1 alpine 3 \
-            1-alpine-3 1-alpine alpine
+          ./build-image.sh Dockerfile-alpine-3 \
+            $IMAGE_NAME:1-alpine-3 \
+            $IMAGE_NAME:1-alpine \
+            $IMAGE_NAME:alpine
 
       - name: Test 1-alpine-3
         run: tests/run $IMAGE_NAME:1-alpine-3
